@@ -1,12 +1,13 @@
 package main;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 public class KitchenModel {
 	private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("kitchen");
 
 	public KitchenModel() {
-
 	}
 	
 	public void addProduct(String name) {
@@ -36,12 +37,30 @@ public class KitchenModel {
 
 	public void delProduct(int id) {
 		EntityManager em = emf.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		transaction.begin();
 		Product product = em.find(Product.class, id);
 		try {
 			em.remove(product);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		transaction.commit();
 		em.close();
+	}
+
+	public List<Product> getProducts()
+	{
+		EntityManager em = emf.createEntityManager();
+		TypedQuery<Product> query = em.createQuery("SELECT p FROM Product p WHERE p.ID IS NOT NULL",Product.class);
+		List<Product> result = query.getResultList();
+		em.close();
+		return result;		
+	}
+	
+	public void delAllProducts() {
+		for(Product p : getProducts()) {
+			delProduct(p.getID());
+		}
 	}
 }

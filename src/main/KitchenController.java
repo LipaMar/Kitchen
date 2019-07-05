@@ -6,9 +6,7 @@ public class KitchenController {
 	public KitchenController(KitchenModel model, KitchenView view) {
 		this.view = view;
 		this.model = model;
-	}
-	public void updateView() {
-
+		view.update(model);
 	}
 	
 }
