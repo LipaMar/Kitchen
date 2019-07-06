@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,40 +15,65 @@ import javax.swing.border.Border;
 
 public class ProductFrame extends JFrame{
 	private JPanel upperPanel;
+	private JPanel centerPanel;
 	private JPanel bottomPanel;
 	private JButton productAdditionButton;
+	private JTextField newProductNameTextField;
+	//private AddButtonListener addListener;
+	private DelButtonListener delListener;
 	private List<Product> products;
 	public ProductFrame() {
 		upperPanel = new JPanel();
+		centerPanel = new JPanel();
 		bottomPanel = new JPanel();
 		upperPanel.add(new JLabel("Dodaj nowy produkt"));
-		JTextField NewProductNameTextField = new JTextField(15);
-		productAdditionButton= new JButton("Dodaj");
-		upperPanel.add(NewProductNameTextField);
+		newProductNameTextField = new JTextField(15);
+		productAdditionButton = new JButton("Dodaj");
+		upperPanel.add(newProductNameTextField);
 		upperPanel.add(productAdditionButton);
 		
-
-		
 		this.add(upperPanel,BorderLayout.NORTH);
+		this.add(centerPanel,BorderLayout.CENTER);
+		this.add(bottomPanel,BorderLayout.SOUTH);
 		this.setTitle("Products");
-		this.setSize(700, 700);
+		this.setSize(700, 500);
 		this.setLocationByPlatform(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
 	
 	public void updateProducts(List<Product> products) {
+		centerPanel.removeAll();
+		centerPanel.setLayout(new GridLayout(1,3));
+		JPanel a = new JPanel();
+		JPanel b = new JPanel();
+		JPanel c = new JPanel();
+		b.setLayout(new GridLayout(products.size(),2,0,10));
 		for(Product p : products) {
-			System.out.println(p.getName());
 			JLabel label = new JLabel(p.getName());
 			JButton button = new JButton("Usuń");
-			bottomPanel.add(label);
-			bottomPanel.add(button);
+			DelButtonListener listener = delListener.copy();
+			listener.setProductId(p.getID());
+			button.addActionListener(listener);
+			b.add(label);
+			b.add(button);
 		}
+		centerPanel.add(a);
+		centerPanel.add(b);
+		centerPanel.add(c);
 
-		this.add(bottomPanel,BorderLayout.CENTER);
 		this.revalidate();
 		this.repaint();
 	}
-	
+
+	public JTextField getNewProductNameTextField() {
+		return newProductNameTextField;
+	}
+
+	public void setDelListener(DelButtonListener listener) {
+		delListener = listener;
+	}
+	public void setAddListener(AddButtonListener listener) {
+		productAdditionButton.addActionListener(listener);
+	}
 }
