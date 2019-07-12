@@ -1,10 +1,9 @@
 package main;
 
 public class KitchenView {
-	private ProductFrame productFrame;
+	private ProductsFrame productFrame;
 	public KitchenView() {
-		productFrame = new ProductFrame();
-		
+		productFrame = new ProductsFrame();
 	}
 	public void update(KitchenModel model) {
 		productFrame.getNewProductNameTextField().setText("");
