@@ -68,7 +68,7 @@ public class ProductsFrame extends JFrame{
 			JLabel label = new JLabel(firstLetterToUpper(p.getName()));
 			JButton button = new JButton("Usuń");
 			DelButtonListener listener = delListener.copy();
-			listener.setProductId(p.getID());
+			listener.setProductId(p.getId());
 			button.addActionListener(listener);
 			panel.setLayout(new BorderLayout());
 			panel.add(label,BorderLayout.WEST);
