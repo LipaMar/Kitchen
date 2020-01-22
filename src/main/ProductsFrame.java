@@ -2,55 +2,63 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.hibernate.exception.ConstraintViolationException;
 
-public class ProductsFrame extends JFrame{
-	public final int FRAME_WIDTH=600;
-	public final int FRAME_HEIGHT=500;
+
+public class ProductsFrame extends MenuFrame{
+	
 	private JPanel upperPanel;
 	private JPanel centerPanel;
 	private JPanel bottomPanel;
 	private JButton productAdditionButton;
 	private JTextField newProductNameTextField;
-	private DelButtonListener delListener;
+	private KitchenModel db;
 	public ProductsFrame() {
+		super();
+		this.setTitle("Products");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		db = new KitchenModel();
+		
 		upperPanel = new JPanel();
 		centerPanel = new JPanel();
 		bottomPanel = new JPanel();
 		upperPanel.add(new JLabel("Dodaj nowy produkt"));
 		newProductNameTextField = new JTextField(20);
 		productAdditionButton = new JButton("Dodaj");
+		productAdditionButton.addActionListener(new AddButtonListener());
 		upperPanel.add(newProductNameTextField);
 		upperPanel.add(productAdditionButton);
 		
 		
-		
-		this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		upperPanel.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT/5));
 		centerPanel.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT*3/5));
 		bottomPanel.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT/5));
 		this.add(upperPanel,BorderLayout.NORTH);
 		this.add(centerPanel,BorderLayout.CENTER);
 		this.add(bottomPanel,BorderLayout.SOUTH);
-		this.setTitle("Products");
-		this.setLocationByPlatform(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
+		
+		updateProducts();
+		
 		this.setVisible(true);
 	}
 	
-	public void updateProducts(List<Product> products) {
+	public void updateProducts() {
 		centerPanel.removeAll();
-		JPanel listPanel = buildProductsListPanel(products);
+		JPanel listPanel = buildProductsListPanel(db.getProducts());
 		JScrollPane scroll = new JScrollPane(listPanel);
 		scroll.setPreferredSize(new Dimension( (int)listPanel.getPreferredSize().getWidth()+30, (int)centerPanel.getPreferredSize().getHeight()-50));
 		scroll.setBorder(BorderFactory.createTitledBorder("Produkty"));
@@ -66,13 +74,11 @@ public class ProductsFrame extends JFrame{
 		for(Product p : products) {
 			JPanel panel = new JPanel();
 			JLabel label = new JLabel(firstLetterToUpper(p.getName()));
-			JButton button = new JButton("Usuń");
-			DelButtonListener listener = delListener.copy();
-			listener.setProductId(p.getId());
-			button.addActionListener(listener);
+			JButton delButton = new JButton("Usuń");
+			delButton.addActionListener(new DelButtonListener(p));
 			panel.setLayout(new BorderLayout());
 			panel.add(label,BorderLayout.WEST);
-			panel.add(button,BorderLayout.EAST);
+			panel.add(delButton,BorderLayout.EAST);
 			result.add(panel);
 		}
 		result.setLayout(new BoxLayout(result, BoxLayout.Y_AXIS));
@@ -88,10 +94,37 @@ public class ProductsFrame extends JFrame{
 		return newProductNameTextField;
 	}
 
-	public void setDelListener(DelButtonListener listener) {
-		delListener = listener;
+	private class DelButtonListener implements ActionListener{
+		private Product product;
+		public DelButtonListener(Product p) {
+			product = p;
+		}
+		public void actionPerformed(ActionEvent e) {
+			db.delProduct(product.getId());
+			updateProducts();
+		}
 	}
-	public void setAddListener(AddButtonListener listener) {
-		productAdditionButton.addActionListener(listener);
+	
+	private class AddButtonListener implements ActionListener{
+		public AddButtonListener() {
+		}
+		public void actionPerformed(ActionEvent e) {
+			String str = newProductNameTextField.getText();
+			if(str.equals(""))
+				JOptionPane.showMessageDialog(null, "Wprowadź nazwę produktu", "Brak nazwy produktu", JOptionPane.INFORMATION_MESSAGE);
+			else if(str.length()>30)
+				JOptionPane.showMessageDialog(null, "Wprowadzona nazwa jest zbyt długa", "Zbyt długa nazwa produktu", JOptionPane.ERROR_MESSAGE);
+			else {
+				
+				try {
+					db.addProduct(str);
+				} catch (SQLIntegrityConstraintViolationException e1) {
+					
+					JOptionPane.showMessageDialog(null, "Wprowadzony produkt już znajduje się w bazie!", "Błąd", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+			updateProducts();
+		}
+
 	}
 }

@@ -1,8 +1,11 @@
 package main;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import javax.persistence.*;
+
+import org.hibernate.exception.ConstraintViolationException;
 
 public class KitchenModel {
 	private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("kitchen");
@@ -10,7 +13,7 @@ public class KitchenModel {
 	public KitchenModel() {
 	}
 	
-	public void addProduct(String name) {
+	public void addProduct(String name) throws SQLIntegrityConstraintViolationException{
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 		try {
@@ -21,6 +24,7 @@ public class KitchenModel {
 		} catch (Exception e) {
 			if (transaction != null) {
 				transaction.rollback();
+				throw new SQLIntegrityConstraintViolationException();
 			}
 			e.printStackTrace();
 		} finally {
