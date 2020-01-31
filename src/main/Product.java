@@ -7,14 +7,14 @@ import org.hibernate.annotations.Immutable;
 @Entity
 @Table(name="products")
 public class Product implements Serializable{
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6425688262558835094L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID")
     private Integer ID;
 	@Column(name = "Name",unique=true)
 	private String Name;
-	
+	@JoinColumn()
 	public Product() {
 		Name = null;
 	}
