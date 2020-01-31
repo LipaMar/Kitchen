@@ -52,7 +52,7 @@ public class KitchenModel {
 	public List<Product> getProducts()
 	{
 		EntityManager em = emf.createEntityManager();
-		TypedQuery<Product> query = em.createQuery("SELECT p FROM Product p WHERE p.ID IS NOT NULL",Product.class);
+		TypedQuery<Product> query = em.createQuery("SELECT p FROM Product p WHERE p.Id IS NOT NULL",Product.class);
 		List<Product> result = query.getResultList();
 		em.close();
 		return result;		
@@ -60,7 +60,7 @@ public class KitchenModel {
 	
 	public void delAllProducts() {
 		for(Product p : getProducts()) {
-			delProduct(p.getID());
+			delProduct(p.getId());
 		}
 	}
 }

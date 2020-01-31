@@ -1,37 +1,48 @@
 package main;
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.hibernate.annotations.Immutable;
 
 @Entity
-@Table(name="products")
+@Table(name="PRODUCTS")
 public class Product implements Serializable{
 	private static final long serialVersionUID = -6425688262558835094L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID")
-    private Integer ID;
+    @Column(name="Pid")
+    private Integer Id;
 	@Column(name = "Name",unique=true)
 	private String Name;
+	
 	@JoinColumn()
+	@ManyToMany(fetch=FetchType.LAZY,mappedBy="products")
+	private Set<Recipe> recipes=new HashSet<>(0);
+
 	public Product() {
 		Name = null;
 	}
 	public Product(String name) {
 		Name = name;
 	}
-	public Integer getID() {
-		return ID;
+	public Integer getId() {
+		return Id;
 	}
 	public String getName() {
 		return Name;
 	}
-	public void setID(Integer iD) {
-		ID = iD;
+	public void setID(Integer Id) {
+		this.Id = Id;
 	}
 	public void setName(String name) {
 		Name = name;
+	}
+	public Set<Recipe> getRecipes() {
+		return recipes;
+	}
+	public void setRecipes(Set<Recipe> recipes) {
+		this.recipes = recipes;
 	}
 	
 }
