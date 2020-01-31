@@ -16,7 +16,6 @@ public class Product implements Serializable{
 	@Column(name = "Name",unique=true)
 	private String Name;
 	
-	@JoinColumn()
 	@ManyToMany(fetch=FetchType.LAZY,mappedBy="products")
 	private Set<Recipe> recipes=new HashSet<>(0);
 
