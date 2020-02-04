@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import org.hibernate.exception.ConstraintViolationException;
 
 
-public class ProductsFrame extends MenuFrame{
+public class ProductsPanel extends JPanel{
 	
 	private JPanel upperPanel;
 	private JPanel centerPanel;
@@ -27,10 +27,12 @@ public class ProductsFrame extends MenuFrame{
 	private JButton productAdditionButton;
 	private JTextField newProductNameTextField;
 	private KitchenModel db;
-	public ProductsFrame() {
+	public final int FRAME_WIDTH=600;
+	public final int FRAME_HEIGHT=500;
+	public ProductsPanel() {
 		super();
-		this.setTitle("Products");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	//	this.setTitle("Products");
+	//	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		db = new KitchenModel();
 		
 		upperPanel = new JPanel();
@@ -42,8 +44,9 @@ public class ProductsFrame extends MenuFrame{
 		productAdditionButton.addActionListener(new AddButtonListener());
 		upperPanel.add(newProductNameTextField);
 		upperPanel.add(productAdditionButton);
+		this.setVisible(true);
 		
-		
+	//	upperPanel.setPreferredSize(new Dimension(get,getPreferredSize().height/5));
 		upperPanel.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT/5));
 		centerPanel.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT*3/5));
 		bottomPanel.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT/5));
@@ -53,7 +56,6 @@ public class ProductsFrame extends MenuFrame{
 		
 		updateProducts();
 		
-		this.setVisible(true);
 	}
 	
 	public void updateProducts() {
@@ -63,7 +65,7 @@ public class ProductsFrame extends MenuFrame{
 		scroll.setPreferredSize(new Dimension( (int)listPanel.getPreferredSize().getWidth()+30, (int)centerPanel.getPreferredSize().getHeight()-50));
 		scroll.setBorder(BorderFactory.createTitledBorder("Produkty"));
 		centerPanel.add(scroll);
-
+		
 		this.revalidate();
 		this.repaint();
 	}
