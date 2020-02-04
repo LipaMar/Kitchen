@@ -8,16 +8,17 @@ import java.util.Set;
 @Entity
 @Table(name="PRODUCTS")
 public class Product implements Serializable{
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6425688262558835094L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="Pid")
     private Integer Id;
 	@Column(name = "Name",unique=true)
 	private String Name;
+	
 	@ManyToMany(fetch=FetchType.LAZY,mappedBy="products")
 	private Set<Recipe> recipes=new HashSet<>(0);
-	
+
 	public Product() {
 		Name = null;
 	}
