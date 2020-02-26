@@ -4,21 +4,31 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import javax.persistence.*;
-
-import org.hibernate.exception.ConstraintViolationException;
+import javax.swing.*;
 
 public class KitchenModel {
-	private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("kitchen");
+	private final EntityManagerFactory emf;
 
 	public KitchenModel() {
+		EntityManagerFactory emf = null;
+		try {
+			emf = Persistence.createEntityManagerFactory("kitchen");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(new JFrame(), "Błąd połączenia z bazą danych", "Błąd",
+					JOptionPane.ERROR_MESSAGE);
+
+			e.printStackTrace();
+		}
+		this.emf = emf;
+
 	}
-	
-	public void addProduct(String name) throws SQLIntegrityConstraintViolationException{
+
+	public void addProduct(String name) throws SQLIntegrityConstraintViolationException {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 		try {
 			transaction.begin();
-			Product product = new Product(name.toLowerCase());
+			Product product = new Product(name);
 			em.persist(product);
 			transaction.commit();
 		} catch (Exception e) {
@@ -53,17 +63,16 @@ public class KitchenModel {
 		em.close();
 	}
 
-	public List<Product> getProducts()
-	{
+	public List<Product> getProducts() {
 		EntityManager em = emf.createEntityManager();
-		TypedQuery<Product> query = em.createQuery("SELECT p FROM Product p WHERE p.Id IS NOT NULL",Product.class);
+		TypedQuery<Product> query = em.createQuery("SELECT p FROM Product p WHERE p.Id IS NOT NULL", Product.class);
 		List<Product> result = query.getResultList();
 		em.close();
-		return result;		
+		return result;
 	}
-	
+
 	public void delAllProducts() {
-		for(Product p : getProducts()) {
+		for (Product p : getProducts()) {
 			delProduct(p.getId());
 		}
 	}
