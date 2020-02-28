@@ -7,7 +7,7 @@ public class KitchenApp {
 	//	KitchenView view = new KitchenView();
 	//	KitchenController controller = new KitchenController(model,view);
 		
-		MenuFrame menu = new MenuFrame();
+		KitchenFrame menu = new KitchenFrame();
 		
 	}
 

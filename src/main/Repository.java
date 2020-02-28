@@ -6,10 +6,10 @@ import java.util.List;
 import javax.persistence.*;
 import javax.swing.*;
 
-public class KitchenModel {
+public class Repository {
 	private final EntityManagerFactory emf;
 
-	public KitchenModel() {
+	public Repository() {
 		EntityManagerFactory emf = null;
 		try {
 			emf = Persistence.createEntityManagerFactory("kitchen");
@@ -76,4 +76,5 @@ public class KitchenModel {
 			delProduct(p.getId());
 		}
 	}
+	
 }

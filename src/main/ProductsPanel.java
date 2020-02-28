@@ -3,6 +3,7 @@ package main;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -21,26 +22,21 @@ import javax.swing.JTextField;
 public class ProductsPanel extends JPanel {
 
 	private JPanel upperPanel;
-	private ProductsList centerPanel;
-	private JPanel bottomPanel;
+	private ProductsListPanel centerPanel;
 	private JButton productAdditionButton;
 	private JTextField newProductNameTextField;
-	private KitchenModel db;
-	public final int FRAME_WIDTH = 600;
-	public final int FRAME_HEIGHT = 500;
+	private Repository db;
 
 	public ProductsPanel() {
-		db = new KitchenModel();
+		db = new Repository();
 
 		upperPanel = new JPanel();
-		centerPanel = new ProductsList();
-		bottomPanel = new JPanel();
+		centerPanel = new ProductsListPanel();
 
 		initUpperPanel();
 
 		this.add(upperPanel, BorderLayout.NORTH);
 		this.add(centerPanel, BorderLayout.CENTER);
-		this.add(bottomPanel, BorderLayout.SOUTH);
 
 		updateProducts();
 
@@ -54,7 +50,6 @@ public class ProductsPanel extends JPanel {
 		productAdditionButton.addActionListener(new AddButtonListener());
 		upperPanel.add(newProductNameTextField);
 		upperPanel.add(productAdditionButton);
-		upperPanel.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT / 5));
 	}
 
 	public void updateProducts() {

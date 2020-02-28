@@ -17,14 +17,14 @@ import javax.swing.JScrollPane;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
-public class ProductsList extends JPanel {
+public class ProductsListPanel extends JPanel {
 	private final Dimension panelSize;
 	private Dimension listElementSize;
 	private JScrollPane scroll;
 	private JPanel list;
-	private KitchenModel db = new KitchenModel();
+	private Repository db = new Repository();
 
-	public ProductsList() {
+	public ProductsListPanel() {
 		panelSize = new Dimension(450, 300);
 		listElementSize = new Dimension((int)panelSize.getWidth(), 40);
 		list = new JPanel();
@@ -37,8 +37,6 @@ public class ProductsList extends JPanel {
 	public void update() {
 		clear();
 		buildListPane();
-		repaint();
-		revalidate();
 	}
 
 	private void clear() {
@@ -60,6 +58,8 @@ public class ProductsList extends JPanel {
 
 			list.add(new ProductPanel(product));
 		}
+		repaint();
+		revalidate();
 	}
 
 	private class ProductPanel extends JPanel {
