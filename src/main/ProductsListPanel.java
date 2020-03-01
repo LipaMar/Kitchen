@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.*;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+
+import Entities.Product;
 
 public class ProductsListPanel extends JPanel {
 	private final Dimension panelSize;
@@ -54,7 +57,7 @@ public class ProductsListPanel extends JPanel {
 
 	private void buildListPane() {
 		list.setLayout(new BoxLayout(list, BoxLayout.Y_AXIS));
-		for (Product product : db.getProducts()) {
+		for (Product product : db.getAllProducts()) {
 
 			list.add(new ProductPanel(product));
 		}
@@ -64,12 +67,16 @@ public class ProductsListPanel extends JPanel {
 
 	private class ProductPanel extends JPanel {
 		public ProductPanel(Product p) {
-			setLayout(new BorderLayout());
+			setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 			JButton button = new JButton("Usuñ");
 			button.addActionListener(new DelButtonListener(p));
-			add(button, BorderLayout.EAST);
-			add(new JLabel(p.getName()), BorderLayout.WEST);
+			
+			add(new JLabel(p.getName()));
+			add(Box.createHorizontalGlue());
+			add(new JLabel(p.getUnit().getName()));
+			add(Box.createHorizontalGlue());
+			add(button);
 		}
 
 		@Override

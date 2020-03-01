@@ -12,19 +12,23 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import Entities.Unit;
 
 public class ProductsPanel extends JPanel {
 
 	private JPanel upperPanel;
 	private ProductsListPanel centerPanel;
-	private JButton productAdditionButton;
 	private JTextField newProductNameTextField;
+	private JComboBox<Object> units;
 	private Repository db;
 
 	public ProductsPanel() {
@@ -39,16 +43,16 @@ public class ProductsPanel extends JPanel {
 		this.add(centerPanel, BorderLayout.CENTER);
 
 		updateProducts();
-
-		this.setVisible(true);
 	}
 
 	private void initUpperPanel() {
 		upperPanel.add(new JLabel("Dodaj nowy produkt"));
 		newProductNameTextField = new JTextField(20);
-		productAdditionButton = new JButton("Dodaj");
+		units = new JComboBox<Object>(db.getAllUnits().toArray());
+		JButton productAdditionButton = new JButton("Dodaj");
 		productAdditionButton.addActionListener(new AddButtonListener());
 		upperPanel.add(newProductNameTextField);
+		upperPanel.add(units);
 		upperPanel.add(productAdditionButton);
 	}
 
@@ -61,7 +65,7 @@ public class ProductsPanel extends JPanel {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			String str = firstLetterToUpper(newProductNameTextField.getText());
+			String str = firstLetterToUpperCase(newProductNameTextField.getText());
 			if (str.equals(""))
 				JOptionPane.showMessageDialog(null, "Wprowadź nazwę produktu", "Brak nazwy produktu",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -71,7 +75,7 @@ public class ProductsPanel extends JPanel {
 			else {
 
 				try {
-					db.addProduct(str);
+					db.addProduct(str,(Unit)units.getSelectedItem());
 				} catch (SQLIntegrityConstraintViolationException e1) {
 
 					JOptionPane.showMessageDialog(null, "Wprowadzony produkt już znajduje się w bazie!", "Błąd",
@@ -81,7 +85,7 @@ public class ProductsPanel extends JPanel {
 			updateProducts();
 		}
 
-		private String firstLetterToUpper(String str) {
+		private String firstLetterToUpperCase(String str) {
 
 			return str.replaceFirst(str.substring(0, 1), str.substring(0, 1).toUpperCase());
 		}

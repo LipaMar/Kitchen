@@ -1,31 +1,28 @@
-package main;
+package Entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "RECIPES")
 public class Recipe implements Serializable {
+	private static final long serialVersionUID = -1732292348825442609L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Rid")
 	private Integer id;
 
-	@Column(name = "Name")
-	private String name;
+	@Column(name = "Title")
+	private String title;
 
 	@Column(name = "Steps")
 	private String steps;
@@ -38,17 +35,18 @@ public class Recipe implements Serializable {
 		steps = null;
 	}
 
-	public Recipe(String name) {
-		this.name = name;
-		steps = "";
+	public Recipe(String title, String steps, Set<Ingredient> ingredients) {
+		this.title = title;
+		this.steps = steps;
+		this.ingredients = ingredients;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String name) {
+		this.title = name;
 	}
 
 	public String getSteps() {

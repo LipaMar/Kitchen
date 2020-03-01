@@ -2,9 +2,12 @@ package main;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 import javax.swing.*;
+
+import Entities.*;
 
 public class Repository {
 	private final EntityManagerFactory emf;
@@ -23,12 +26,15 @@ public class Repository {
 
 	}
 
-	public void addProduct(String name) throws SQLIntegrityConstraintViolationException {
+	// ------Product--------
+
+
+	public void addProduct(String name,Unit unit) throws SQLIntegrityConstraintViolationException {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 		try {
 			transaction.begin();
-			Product product = new Product(name);
+			Product product = new Product(name,unit);
 			em.persist(product);
 			transaction.commit();
 		} catch (Exception e) {
@@ -63,18 +69,59 @@ public class Repository {
 		em.close();
 	}
 
-	public List<Product> getProducts() {
+	public List<Product> getAllProducts() {
 		EntityManager em = emf.createEntityManager();
-		TypedQuery<Product> query = em.createQuery("SELECT p FROM Product p WHERE p.Id IS NOT NULL", Product.class);
+		TypedQuery<Product> query = em.createQuery("SELECT p FROM Product p WHERE p.id IS NOT NULL", Product.class);
 		List<Product> result = query.getResultList();
 		em.close();
 		return result;
 	}
 
 	public void delAllProducts() {
-		for (Product p : getProducts()) {
+		for (Product p : getAllProducts()) {
 			delProduct(p.getId());
 		}
 	}
-	
+
+	// ------Recipe--------
+	public void addRecipe(String title, String steps, Set<Ingredient> ingredients) {
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		try {
+			transaction.begin();
+			Recipe recipe = new Recipe(title,steps,ingredients);
+			em.persist(recipe);
+			transaction.commit();
+		}catch (Exception e) {
+			if(transaction!=null)
+				transaction.rollback();
+		}finally {
+			em.close();
+		}
+	}
+
+	/*public Recipe getRecipe(int Id) {
+		return null;
+	}
+
+	public void delRecipe(int Id) {
+
+	}*/
+
+	public List<Recipe> getAllRecipes() {
+		EntityManager em = emf.createEntityManager();
+		TypedQuery<Recipe> query = em.createQuery("FROM Recipe r WHERE r.id IS NOT NULL", Recipe.class);
+		List<Recipe> result = query.getResultList();
+		return result;
+	}
+
+	// ------Unit--------
+	public List<Unit> getAllUnits() {
+		EntityManager em = emf.createEntityManager();
+		TypedQuery<Unit> query = em.createQuery("FROM Unit u WHERE u.id IS NOT NULL", Unit.class);
+		List<Unit> result = query.getResultList();
+		return result;
+	}
+
+	// ------Ingredient--------
 }

@@ -1,4 +1,4 @@
-package main;
+package Entities;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -12,47 +12,52 @@ public class Product implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Pid")
-	private Integer Id;
+	private Integer id;
 
 	@Column(name = "Name", unique = true)
-	private String Name;
+	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Uid")
-	private Unit Unit;
+	private Unit unit;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private Set<Ingredient> ingredients;
 
 	public Product() {
-		Name = null;
+		name = null;
 	}
 
 	public Product(String name) {
-		Name = name;
+		this.name = name;
+	}
+
+	public Product(String name, Unit unit) {
+		this.name = name;
+		this.unit = unit;
 	}
 
 	public Integer getId() {
-		return Id;
+		return id;
 	}
 
 	public String getName() {
-		return Name;
+		return name;
 	}
 
 	public void setID(Integer Id) {
-		this.Id = Id;
+		this.id = Id;
 	}
 
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 
 	public Unit getUnit() {
-		return Unit;
+		return unit;
 	}
 
 	public void setUnit(Unit unit) {
-		Unit = unit;
+		this.unit = unit;
 	}
 }

@@ -1,4 +1,4 @@
-package main;
+package Entities;
 
 import java.util.Set;
 
@@ -10,31 +10,35 @@ public class Unit {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Uid")
-	private Integer Id;
+	private Integer id;
 	@Column(name = "Name")
-	private String Name;
+	private String name;
 
-	@OneToMany(mappedBy = "Unit", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "unit", cascade = CascadeType.ALL)
 	private Set<Product> Products;
 
 	public Integer getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(Integer id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public String getName() {
-		return Name;
+		return name;
 	}
 
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 
 	public Set<Product> getProducts() {
 		return Products;
 	}
-
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return getName();
+	}
 }

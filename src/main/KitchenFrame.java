@@ -26,7 +26,7 @@ public class KitchenFrame extends JFrame {
 	private void buildGui() {
 		cards = new JPanel(new CardLayout());
 		JPanel fridgeCard = new ProductsPanel();
-		JPanel recipeCard = new JPanel();
+		JPanel recipeCard = new RecipesPanel();
 		cards.add(recipeCard, "recipe");
 		cards.add(fridgeCard, "fridge");
 

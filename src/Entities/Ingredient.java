@@ -1,9 +1,7 @@
 
-package main;
+package Entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.*;
 
@@ -15,7 +13,7 @@ public class Ingredient implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer Id;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "Rid")
 	private Recipe recipe;
@@ -26,6 +24,13 @@ public class Ingredient implements Serializable {
 
 	@Column(name = "Quantity")
 	private Integer Quantity;
+
+	public Ingredient(Integer id, Recipe recipe, Product product, Integer quantity) {
+		Id = id;
+		this.recipe = recipe;
+		this.product = product;
+		Quantity = quantity;
+	}
 
 	public Integer getId() {
 		return Id;
@@ -54,6 +59,5 @@ public class Ingredient implements Serializable {
 	public void setQuantity(Integer quantity) {
 		Quantity = quantity;
 	}
-
 
 }
