@@ -28,24 +28,46 @@ public class Repository {
 
 	// ------Product--------
 
-
-	public void addProduct(String name,Unit unit) throws SQLIntegrityConstraintViolationException {
+	public void addProduct(String name, Unit unit) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction transaction = em.getTransaction();
+		name = firstLetterToUpperCase(name);
+		if (!isProductNameProper(name))
+			return;
 		try {
 			transaction.begin();
-			Product product = new Product(name,unit);
+			Product product = new Product(name, unit);
 			em.persist(product);
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null) {
 				transaction.rollback();
-				throw new SQLIntegrityConstraintViolationException();
+				JOptionPane.showMessageDialog(null,
+						"Wystąpił błąd przy próbie zapisu do bazy. Sprawdź, czy podany produkt nie znajduje się już w bazie danych!",
+						"Błąd", JOptionPane.INFORMATION_MESSAGE);
 			}
 			e.printStackTrace();
 		} finally {
 			em.close();
 		}
+	}
+
+	private String firstLetterToUpperCase(String str) {
+
+		return str.replaceFirst(str.substring(0, 1), str.substring(0, 1).toUpperCase());
+	}
+
+	private boolean isProductNameProper(String name) {
+		if (name.equals("")) {
+			JOptionPane.showMessageDialog(null, "Wprowadź nazwę produktu", "Brak nazwy produktu",
+					JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		} else if (name.length() > 30) {
+			JOptionPane.showMessageDialog(null, "Wprowadzona nazwa jest zbyt długa", "Zbyt długa nazwa produktu",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
 	}
 
 	public Product getProduct(int id) {
@@ -89,24 +111,24 @@ public class Repository {
 		EntityTransaction transaction = em.getTransaction();
 		try {
 			transaction.begin();
-			Recipe recipe = new Recipe(title,steps,ingredients);
+			Recipe recipe = new Recipe(title, steps, ingredients);
 			em.persist(recipe);
 			transaction.commit();
-		}catch (Exception e) {
-			if(transaction!=null)
+		} catch (Exception e) {
+			if (transaction != null)
 				transaction.rollback();
-		}finally {
+		} finally {
 			em.close();
 		}
 	}
 
-	/*public Recipe getRecipe(int Id) {
-		return null;
-	}
-
-	public void delRecipe(int Id) {
-
-	}*/
+	/*
+	 * public Recipe getRecipe(int Id) { return null; }
+	 * 
+	 * public void delRecipe(int Id) {
+	 * 
+	 * }
+	 */
 
 	public List<Recipe> getAllRecipes() {
 		EntityManager em = emf.createEntityManager();

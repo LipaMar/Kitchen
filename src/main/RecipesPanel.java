@@ -1,23 +1,28 @@
 package main;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-
-import Entities.Ingredient;
-import Entities.Recipe;
+import javax.swing.*;
+import Entities.*;
 
 public class RecipesPanel extends JPanel {
 	private Repository db = new Repository();
 	public RecipesPanel() {
-		JTextArea text = new JTextArea();
-		List<Recipe> recipes = db.getAllRecipes();
-		Set<Ingredient> list = recipes.get(0).getIngredients();
-		String txt = "";
-		for (Ingredient ingredient : list) {
-			txt+=ingredient.getProduct().getName()+" "+ingredient.getQuantity();//+" "+ingredient.getProduct().getUnit().getName()+"\n";
-		}
-		text.setText(txt);
-		this.add(text);
+		JButton createRecipe = createNewRecipeButton();
+		add(createRecipe);
+	}
+	private JButton createNewRecipeButton() {
+		JButton result = new JButton("Nowy przepis");
+		
+		result.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				NewRecipeFrame frame = new NewRecipeFrame();
+				frame.makeNewRecipe();
+			}
+		});
+		
+		return result;
 	}
 }

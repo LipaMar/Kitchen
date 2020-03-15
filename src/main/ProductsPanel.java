@@ -65,29 +65,8 @@ public class ProductsPanel extends JPanel {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			String str = firstLetterToUpperCase(newProductNameTextField.getText());
-			if (str.equals(""))
-				JOptionPane.showMessageDialog(null, "Wprowadź nazwę produktu", "Brak nazwy produktu",
-						JOptionPane.INFORMATION_MESSAGE);
-			else if (str.length() > 30)
-				JOptionPane.showMessageDialog(null, "Wprowadzona nazwa jest zbyt długa", "Zbyt długa nazwa produktu",
-						JOptionPane.ERROR_MESSAGE);
-			else {
-
-				try {
-					db.addProduct(str,(Unit)units.getSelectedItem());
-				} catch (SQLIntegrityConstraintViolationException e1) {
-
-					JOptionPane.showMessageDialog(null, "Wprowadzony produkt już znajduje się w bazie!", "Błąd",
-							JOptionPane.INFORMATION_MESSAGE);
-				}
-			}
+			db.addProduct(newProductNameTextField.getText(), (Unit) units.getSelectedItem());
 			updateProducts();
-		}
-
-		private String firstLetterToUpperCase(String str) {
-
-			return str.replaceFirst(str.substring(0, 1), str.substring(0, 1).toUpperCase());
 		}
 
 	}
