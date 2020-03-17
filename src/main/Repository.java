@@ -10,22 +10,22 @@ import javax.swing.*;
 import Entities.*;
 
 public class Repository {
-	private final EntityManagerFactory emf;
+	private EntityManagerFactory emf;
 
 	public Repository() {
-		EntityManagerFactory emf = null;
 		try {
 			emf = Persistence.createEntityManagerFactory("kitchen");
+			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(new JFrame(), "Błąd połączenia z bazą danych", "Błąd",
 					JOptionPane.ERROR_MESSAGE);
 
 			e.printStackTrace();
 		}
-		this.emf = emf;
-
 	}
-
+	public boolean isConnected() {
+		return emf==null?false:true;
+	}
 	// ------Product--------
 
 	public void addProduct(String name, Unit unit) {

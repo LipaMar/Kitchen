@@ -7,8 +7,9 @@ import javax.swing.*;
 import Entities.*;
 
 public class RecipesPanel extends JPanel {
-	private Repository db = new Repository();
+	private Repository db;
 	public RecipesPanel() {
+		db = new Repository();
 		JButton createRecipe = createNewRecipeButton();
 		add(createRecipe);
 	}

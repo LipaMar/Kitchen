@@ -25,9 +25,10 @@ public class ProductsListPanel extends JPanel {
 	private Dimension listElementSize;
 	private JScrollPane scroll;
 	private JPanel list;
-	private Repository db = new Repository();
+	private Repository db;
 
 	public ProductsListPanel() {
+		db = new Repository();
 		panelSize = new Dimension(450, 300);
 		listElementSize = new Dimension((int)panelSize.getWidth(), 40);
 		list = new JPanel();
