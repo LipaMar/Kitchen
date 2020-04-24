@@ -3,12 +3,12 @@ package main;
 import java.awt.CardLayout;
 import javax.swing.*;
 
-public class KitchenFrame extends JFrame {
+public class MainFrame extends JFrame {
 	public final int FRAME_WIDTH = 600;
 	public final int FRAME_HEIGHT = 500;
 	private JPanel cards;
 
-	public KitchenFrame() {
+	public MainFrame() {
 		init();
 		buildGui();
 
@@ -25,8 +25,8 @@ public class KitchenFrame extends JFrame {
 
 	private void buildGui() {
 		cards = new JPanel(new CardLayout());
-		JPanel fridgeCard = new ProductsPanel();
-		JPanel recipeCard = new RecipesPanel();
+		JPanel fridgeCard = new ProductsCard();
+		JPanel recipeCard = new RecipesCard();
 		cards.add(recipeCard, "recipe");
 		cards.add(fridgeCard, "fridge");
 

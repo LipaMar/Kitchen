@@ -31,6 +31,15 @@ public class Ingredient implements Serializable {
 		this.product = product;
 		Quantity = quantity;
 	}
+	
+
+	public Ingredient(Recipe recipe, Product product, Integer quantity) {
+		super();
+		this.recipe = recipe;
+		this.product = product;
+		Quantity = quantity;
+	}
+
 
 	public Integer getId() {
 		return Id;

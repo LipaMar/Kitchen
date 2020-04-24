@@ -6,9 +6,9 @@ import java.util.*;
 import javax.swing.*;
 import Entities.*;
 
-public class RecipesPanel extends JPanel {
+public class RecipesCard extends JPanel {
 	private Repository db;
-	public RecipesPanel() {
+	public RecipesCard() {
 		db = new Repository();
 		JButton createRecipe = createNewRecipeButton();
 		add(createRecipe);
@@ -16,13 +16,10 @@ public class RecipesPanel extends JPanel {
 	private JButton createNewRecipeButton() {
 		JButton result = new JButton("Nowy przepis");
 		
-		result.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				NewRecipeFrame frame = new NewRecipeFrame();
-				frame.makeNewRecipe();
-			}
-		});
+		result.addActionListener(ActionListener-> {
+			AddRecipeFrame frame = new AddRecipeFrame();
+			frame.makeNewRecipe();
+			});
 		
 		return result;
 	}
