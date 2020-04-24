@@ -1,5 +1,3 @@
-package main;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -70,7 +68,7 @@ public class ProductsListPanel extends JPanel {
 		public ProductPanel(Product p) {
 			setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-			JButton button = new JButton("Usuñ");
+			JButton button = new JButton("Usuï¿½");
 			button.addActionListener(new DelButtonListener(p));
 			
 			add(new JLabel(p.getName()));

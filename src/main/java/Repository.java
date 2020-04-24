@@ -1,13 +1,16 @@
-package main;
+import Entities.Ingredient;
+import Entities.Product;
+import Entities.Recipe;
+import Entities.Unit;
 
-import java.sql.SQLIntegrityConstraintViolationException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+import javax.swing.*;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.*;
-import javax.swing.*;
-
-import Entities.*;
 
 public class Repository {
 	private EntityManagerFactory emf;
